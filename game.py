@@ -34,9 +34,11 @@ class SpaceRocks:
             self.ship.rotate(clockwise=True)
         elif is_key_pressed[pygame.K_LEFT]:
             self.ship.rotate(clockwise=False)
+        elif is_key_pressed[pygame.K_UP]:
+            self.ship.accelerate()
 
     def _game_logic(self):
-        self.ship.move()
+        self.ship.move(self.screen)
         # self.rock.move()
 
     def _draw(self):

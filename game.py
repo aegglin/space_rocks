@@ -1,7 +1,7 @@
 # space_rocks/game.py
 import pygame
 from utils import load_sprite
-from models import Spaceship
+from models import Rock, Spaceship
 
 class SpaceRocks:
     def __init__(self):
@@ -14,7 +14,8 @@ class SpaceRocks:
         self.background = load_sprite("space", False) # background doens't need alpha channel
 
         self.ship = Spaceship((400, 300))
-
+        # call Rock constructor 6 times
+        self.rocks = [Rock(self.screen, self.ship.position) for _ in range(6)]
 
     def main_loop(self):
         while True:
@@ -37,14 +38,22 @@ class SpaceRocks:
         elif is_key_pressed[pygame.K_UP]:
             self.ship.accelerate()
 
+
+    @property
+    def game_objects(self):
+        return [*self.rocks, self.ship]
+
     def _game_logic(self):
-        self.ship.move(self.screen)
-        # self.rock.move()
+        for obj in self.game_objects:
+            obj.move(self.screen)
 
     def _draw(self):
         # Draw the background and then the ship/rocls
         self.screen.blit(self.background, (0, 0))
-        self.ship.draw(self.screen)
+        
+        for obj in self.game_objects:
+            obj.draw(self.screen)
+
         # self.rock.draw(self.screen)
         pygame.display.flip()
 
